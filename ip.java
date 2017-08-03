@@ -23,7 +23,6 @@ class ip
                 continue;
             }
             l=Character.getNumericValue(a[i]);
-            System.out.println("l= "+l);
             if(l!=-1)
             {
                 if(dec==-1)
@@ -44,7 +43,6 @@ class ip
         {
             if(p[i]>=0 && p[i]<=255)
                 c++;
-            System.out.println("p[i]= "+p[i]);
         }
         if(c==4)
         {
@@ -86,3 +84,13 @@ class ip
         else System.out.println("The entered IP adress is not valid");
     }
 }
+
+OUTPUT-----------------
+
+ Enter IP address
+132.34.45.145
+The entered IP adress is valid
+The IP adress belongs to class B
+The default mask is 255.255.0.0
+first ip is 132.34.0.0
+last ip is 132.34.255.255
