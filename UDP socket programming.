@@ -1,0 +1,71 @@
+//UDP Client & Server :
+//Client.java
+
+
+import java.io.*;
+import java.net.*;
+class Client
+{
+   public static void main(String args[]) throws Exception
+   {
+   while(true)
+   {
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+      DatagramSocket clientSocket = new DatagramSocket();
+      InetAddress IPAddress = InetAddress.getByName("localhost");
+      byte[] senddata = new byte[100];
+      byte[] receivedata = new byte[100];
+      System.out.println("Type a message:");
+      String s = br.readLine();
+      senddata = s.getBytes();
+      DatagramPacket sendpacket = new DatagramPacket(senddata, senddata.length, IPAddress, 9876);
+      clientSocket.send(sendpacket);
+      DatagramPacket receivepacket = new DatagramPacket(receivedata, receivedata.length);
+      clientSocket.receive(receivepacket);
+      String modifiedsentence = new String(receivepacket.getData());
+      System.out.println("FROM SERVER:" + modifiedsentence);
+      clientSocket.close();
+    }   
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Server.java
+import java.io.*;
+import java.net.*;
+
+class Server
+{
+   public static void main(String args[]) throws Exception
+      {
+         DatagramSocket serverSocket = new DatagramSocket(9876);
+            byte[] receivedata = new byte[100];
+            byte[] senddata = new byte[100];
+            while(true)
+               {
+                  DatagramPacket receivepacket = new DatagramPacket(receivedata, receivedata.length);
+                  serverSocket.receive(receivepacket);
+                  String sentence = new String( receivepacket.getData());
+                  System.out.println("RECEIVED: " + sentence);
+                  InetAddress IPAddress = receivepacket.getAddress();
+                  int port = receivepacket.getPort();
+                  String capitalizedsentence = sentence.toUpperCase();
+                  senddata = capitalizedsentence.getBytes();
+                  DatagramPacket sendpacket = new DatagramPacket(senddata, senddata.length, IPAddress, port);
+                  serverSocket.send(sendpacket);
+               }
+      }
+}
