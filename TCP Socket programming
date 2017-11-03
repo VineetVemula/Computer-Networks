@@ -1,0 +1,81 @@
+//TCP Client & Server Chat:
+// TCPClients.java
+import java.net.*;  
+import java.io.*;  
+class TCPClients{  
+public static void main(String args[])throws Exception{  
+Socket s=new Socket("localhost",2000);  
+DataInputStream din=new DataInputStream(s.getInputStream());  
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in));   
+String str="",str2="";  
+while(!str.equals("stop"))
+{  
+System.out.print("User1: ");  
+str=br.readLine();  
+dout.writeUTF(str);  
+dout.flush();  
+str2=din.readUTF();  
+System.out.println("User2: "+str2);  
+}  
+}
+}
+
+//TCPServers.java
+import java.net.*;  
+import java.io.*;  
+class TCPServers{  
+public static void main(String args[])throws Exception{  
+ServerSocket ss=new ServerSocket(2000);  
+Socket s=ss.accept();  
+DataInputStream din=new DataInputStream(s.getInputStream());  
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  
+String str="",str2="";  
+while(!str.equals("stop")){  
+str=din.readUTF();  
+System.out.println("User1: "+str);  
+System.out.print("User2: ");  
+str2=br.readLine();  
+dout.writeUTF(str2);  
+dout.flush();  
+}  
+din.close();  
+s.close();  
+ss.close();  
+}}  
+
+
+//MyClient.java
+    import java.io.*;  
+    import java.net.*;  
+    public class MyClient {  
+    public static void main(String[] args) {  
+    try{      
+    Socket s=new Socket("localhost",6666);  
+    
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
+    dout.writeUTF("Hello Server");  
+    dout.flush();  
+    dout.close();  
+    s.close();  
+    }catch(Exception e){System.out.println(e);}  
+    }  
+    }  
+
+//MyServer.java
+
+    import java.io.*;  
+    import java.net.*;  
+    public class MyServer {  
+    public static void main(String[] args){  
+    try{  
+    ServerSocket ss=new ServerSocket(6666);  
+    Socket s=ss.accept();//establishes connection   
+    DataInputStream dis=new DataInputStream(s.getInputStream());  
+    String  str=(String)dis.readUTF();  
+    System.out.println("message= "+str);  
+    ss.close();  
+    }catch(Exception e){System.out.println(e);}  
+    }  
+    }  
